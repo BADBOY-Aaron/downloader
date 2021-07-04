@@ -1,9 +1,9 @@
-#ifndef APP_ASR_DICT_AUDIO_MANAGER_H_
-#define APP_ASR_DICT_AUDIO_MANAGER_H_
+#ifndef DOWNLOADER_H_
+#define DOWNLOADER_H_
 #include <glog/logging.h>
 #include <curl/curl.h>
 #include<string>
-namespace am {
+namespace download {
 class CurlDNSShareObj {
 	public:
 		static CurlDNSShareObj& getInstance() {
@@ -27,10 +27,10 @@ class CurlDNSShareObj {
 
 };
 
-class AudioManager{
+class Downloader{
 	public:
-		AudioManager();
-		~AudioManager();
+		Downloader();
+		~Downloader();
 
 		void writeData(char* data, int length);
 		const char* getAudioData();
@@ -47,6 +47,6 @@ class AudioManager{
 };
 
 
-} //namespace am
-#endif //APP_ASR_DICT_AUDIO_MANAGER_H_
+} //namespace
+#endif //DOWNLOADWE_H_
 

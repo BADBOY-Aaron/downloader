@@ -1,16 +1,16 @@
-#include "audio_manager.h"
+#include "downloader.h"
 #include <cstring>
 #include <sstream>
-namespace am {
+namespace download {
 const int MAX_FILE_BUFFER_LEN = 268435456; // 256M
 const int MAX_RETRY_COUNT = 10;
 
-AudioManager::AudioManager():m_msg("") {
+Downloader::Downloader():m_msg("") {
 	m_downloadBuffer = new char[MAX_FILE_BUFFER_LEN];
     memset(m_downloadBuffer, 0, MAX_FILE_BUFFER_LEN);
 }
 
-AudioManager::~AudioManager() {
+Downloader::~Downloader() {
 	if(m_downloadBuffer) {
 		delete[] m_downloadBuffer;
         m_downloadBuffer = nullptr;
@@ -20,12 +20,12 @@ AudioManager::~AudioManager() {
 /// Callback must be declared static, otherwise it won't link...
 static size_t WriteCallback(char* ptr, size_t size, size_t nmemb, void *userData)
 {
-	AudioManager* audioManager = static_cast<AudioManager*>(userData);
-	audioManager->writeData(ptr, size*nmemb);
+	Downloader* downloader = static_cast<Downloader*>(userData);
+	downloader->writeData(ptr, size*nmemb);
 	return size*nmemb;
 };
 
-bool AudioManager::downLoadFile(std::string url) {
+bool Downloader::downLoadFile(std::string url) {
     if(url.empty()) {
 		m_code = 404;
 		m_msg = "url is empty";
@@ -142,7 +142,7 @@ bool AudioManager::downLoadFile(std::string url) {
 	return ret;
 }
 
-void AudioManager::writeData(char* data, int length) {
+void Downloader::writeData(char* data, int length) {
 	if (data == nullptr || length <= 0) {
 		return;
 	}
@@ -163,15 +163,15 @@ void AudioManager::writeData(char* data, int length) {
 	return;
 }
 
-const char* AudioManager::getAudioData() {
+const char* Downloader::getAudioData() {
 	return m_downloadBuffer;
 }
 
-unsigned int AudioManager::getAudioSize() {
+unsigned int Downloader::getAudioSize() {
 	return m_downloadLen;
 }
 
-std::string AudioManager::getErrorInfo() {
+std::string Downloader::getErrorInfo() {
 	return m_msg;
 }
 
@@ -180,7 +180,7 @@ static size_t HeadCallback(char* ptr, size_t size, size_t nmemb, void *userData)
 	return size*nmemb;
 };
 
-long AudioManager::getDownloadFileLenth(const char *url){
+long Downloader::getDownloadFileLenth(const char *url){
 	double downloadFileLenth = 0.0f;
 	CURL *handle = curl_easy_init();
 	curl_easy_setopt(handle, CURLOPT_URL, url);

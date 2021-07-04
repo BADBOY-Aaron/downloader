@@ -12,8 +12,8 @@ INCLUDE_DIRECTORIES(${GLOG_INCLUDE_PATH})
 LINK_DIRECTORIES(${GLOG_LIB_PATH})
 set(SRC
 	"${SRCROOT}/main.cc"
-	"${SRCROOT}/audio_manager.h"
-	"${SRCROOT}/audio_manager.cc"
+	"${SRCROOT}/downloader.h"
+	"${SRCROOT}/downloader.cc"
 	) 
 
 add_executable(downloader ${SRC}) 
